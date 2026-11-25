@@ -18,16 +18,6 @@ CARA MENJALANKAN SIMULASI (1 MASTER + 9 WORKER)
    - --min-workers 9 = SUDAH DEFAULT, tidak perlu ditulis
    - Master baru mulai setelah 9 worker terdaftar (maks. tunggu 15 menit)
 
-PENGUJIAN 2
-MASTER: 
-cd /d D:\Downloads\UAS_KPT\Distributed_Simulation
-py master\master.py --host 0.0.0.0 --port 5000 --iterations 500000 --chunk-size 25000 --output results\fault_tolerance_result.json 2>&1 | Tee-Object -FilePath results\log-master-fault.txt
-
-WORKER: 
-cd /d D:\Downloads\UAS_KPT\Distributed_Simulation
-py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-01 --processes 4
-
-
 2. DI 9 PC WORKER (jalankan setelah Master aktif)
 
    PC Worker 1:
@@ -73,3 +63,165 @@ py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-01 --processes 4
    - Folder Distributed_Simulation harus ada di tiap PC worker.
    - Master nyalakan duluan. Worker yang start lebih awal akan gagal connect.
    - Hasil akhir: results\simulation_result.json
+
+
+4. PENGUJIAN FAULT TOLERANCE (1 worker dimatikan saat simulasi jalan)
+   ------------------------------------------------------------------
+   Gunakan PowerShell di PC Master karena Tee-Object hanya ada di PowerShell.
+
+   a. DI PC MASTER:
+
+      cd D:\Downloads\UAS_KPT\Distributed_Simulation
+      py master\master.py --host 0.0.0.0 --port 5000 --iterations 500000 --chunk-size 25000 --output results\fault_tolerance_result.json 2>&1 | Tee-Object -FilePath results\log-master-fault.txt
+
+   b. DI 9 PC WORKER: jalankan ke-9 perintah seperti bagian (2) di atas.
+      Pastikan ID unik WORKER-01 s.d. WORKER-09 (jangan ada ID dobel).
+
+   c. Tunggu sampai Master menampilkan:
+
+      Target worker tercapai! (9 worker terhubung)
+      Memulai distribusi task simulasi...
+      Task TASK-0001 (25000 iterasi) dikirim ke WORKER-01
+
+   d. BARU setelah itu tekan Ctrl+C di terminal WORKER-01.
+      Jangan matikan worker sebelum baris "Task ... dikirim ke ..." muncul.
+
+   e. Yang harus muncul di Master:
+
+      Worker WORKER-01 (...) terputus.
+      [FAULT TOLERANCE] Mendeteksi task terbengkalai TASK-0001 ...
+      [FAULT TOLERANCE] Task TASK-0001 berhasil dikembalikan ke antrean PENDING ...
+      [RECOVERY] Task TASK-0001 siap ditugaskan kembali dari worker WORKER-01
+      Task TASK-0001 (25000 iterasi) dikirim ke WORKER-07
+      [PROGRES] Selesai: 20/20 (100.0%)
+      Total Pemulihan Task       : 1
+
+   f. Bukti tersimpan di:
+
+      results\log-master-fault.txt
+      results\fault_tolerance_result.json
+
+   g. Catatan: Recovery Time tercatat 0.000 s karena deteksi dan requeue
+      terjadi di detik yang sama. Untuk laporan: Recovery Time < 1 detik.
+
+
+5. PENGUJIAN SCALABILITY FISIK 1 / 2 / 4 / 6 / 9 WORKER
+   ------------------------------------------------------
+   Aturan: untuk tiap N, Master dijalankan ULANG dengan --min-workers N.
+   Jangan menambah worker ke Master yang sudah jalan.
+   Ganti 10.113.0.148 dengan IP WiFi Master sebenarnya di lab.
+
+   Pemetaan ID pekerja:
+      WORKER-01  = 10.113.0.165
+      WORKER-02  = 10.220.0.1 (PC-1)
+      WORKER-03  = 10.113.0.150
+      WORKER-04  = 10.113.0.77
+      WORKER-05  = 10.113.0.72
+      WORKER-06  = 10.220.0.1 (PC-2)
+      WORKER-07  = 10.220.0.1 (PC-3)
+      WORKER-08  = 10.220.0.1 (PC-4)
+      WORKER-09  = 10.220.0.1 (PC-5)
+
+   Cek dulu port kosong sebelum tiap putaran:
+      netstat -ano | findstr ":5000 "
+
+   ---------------------------------------------------------------
+   PUTARAN 1 (N=1)
+   ---------------------------------------------------------------
+   Master (PowerShell):
+      py master\master.py --host 0.0.0.0 --port 5000 --iterations 500000 --chunk-size 25000 --min-workers 1 --output results\scalability_physical_1.json 2>&1 | Tee-Object -FilePath results\log-scalability-1.txt
+
+   Worker (1 terminal):
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-01 --processes 4
+
+   Tunggu "Target worker tercapai! (1 worker terhubung)" dan "20/20".
+   Matikan Master + worker. Cek port. Lanjut putaran 2.
+
+   ---------------------------------------------------------------
+   PUTARAN 2 (N=2)
+   ---------------------------------------------------------------
+   Master (PowerShell):
+      py master\master.py --host 0.0.0.0 --port 5000 --iterations 500000 --chunk-size 25000 --min-workers 2 --output results\scalability_physical_2.json 2>&1 | Tee-Object -FilePath results\log-scalability-2.txt
+
+   Worker (2 terminal):
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-01 --processes 4
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-02 --processes 4
+
+   Matikan Master + 2 worker. Cek port. Lanjut putaran 3.
+
+   ---------------------------------------------------------------
+   PUTARAN 3 (N=4)
+   ---------------------------------------------------------------
+   Master (PowerShell):
+      py master\master.py --host 0.0.0.0 --port 5000 --iterations 500000 --chunk-size 25000 --min-workers 4 --output results\scalability_physical_4.json 2>&1 | Tee-Object -FilePath results\log-scalability-4.txt
+
+   Worker (4 terminal):
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-01 --processes 4
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-02 --processes 4
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-05 --processes 4
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-06 --processes 4
+
+   Matikan Master + 4 worker. Cek port. Lanjut putaran 4.
+
+   ---------------------------------------------------------------
+   PUTARAN 4 (N=6)
+   ---------------------------------------------------------------
+   Master (PowerShell):
+      py master\master.py --host 0.0.0.0 --port 5000 --iterations 500000 --chunk-size 25000 --min-workers 6 --output results\scalability_physical_6.json 2>&1 | Tee-Object -FilePath results\log-scalability-6.txt
+
+   Worker (6 terminal):
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-01 --processes 4
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-02 --processes 4
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-05 --processes 4
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-06 --processes 4
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-07 --processes 4
+      py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-08 --processes 4
+
+   Matikan Master + 6 worker. Cek port. Lanjut putaran 5.
+
+   ---------------------------------------------------------------
+   PUTARAN 5 (N=9)
+   ---------------------------------------------------------------
+   Master (PowerShell):
+      py master\master.py --host 0.0.0.0 --port 5000 --iterations 500000 --chunk-size 25000 --min-workers 9 --output results\scalability_physical_9.json 2>&1 | Tee-Object -FilePath results\log-scalability-9.txt
+
+   Worker (9 terminal): semua ID WORKER-01 s.d. WORKER-09 seperti bagian (2).
+
+   Matikan Master + 9 worker.
+
+   ---------------------------------------------------------------
+   HITUNG SPEEDUP & EFFICIENCY
+   ---------------------------------------------------------------
+   Jalankan di PowerShell setelah kelima JSON tersedia:
+
+      $t1 = (Get-Content results\scalability_physical_1.json -Raw | ConvertFrom-Json).wall_clock_time
+
+      foreach ($n in @(1,2,4,6,9)) {
+        $d = Get-Content "results\scalability_physical_$n.json" -Raw | ConvertFrom-Json
+        $sp = [math]::Round($t1 / $d.wall_clock_time, 3)
+        $eff = [math]::Round(($sp / $n) * 100, 1)
+        [pscustomobject]@{
+          Workers = $n
+          WallClock_s = [math]::Round($d.wall_clock_time, 4)
+          Throughput = [math]::Round($d.throughput_iterations_per_sec, 0)
+          Speedup = $sp
+          Efficiency = "$eff%"
+        }
+      } | Format-Table -AutoSize
+
+   Rumus:
+      Speedup    = Waktu N=1 / Waktu N
+      Efficiency = Speedup / N x 100%
+
+   Bukti tersimpan:
+      results\scalability_physical_1.json ... _9.json
+      results\log-scalability-1.txt ... -9.txt
+
+   ---------------------------------------------------------------
+   CATATAN SCALABILITY
+   ---------------------------------------------------------------
+   - --min-workers harus ditulis eksplisit untuk N=1/2/4/6. Default Master = 9.
+   - Jumlah worker aktif harus TEPAT sesuai N. Kalau lebih, hasil tidak valid.
+   - --processes 4 bukan 4 worker; itu 1 worker dengan 4 child process.
+   - Jangan matikan worker sebelum [PROGRES] 20/20 muncul.
+   - Jika ada putaran timeout, ulang putaran itu dari awal.

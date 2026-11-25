@@ -1,55 +1,71 @@
 {
   "benchmark_type": "local_parallel",
-  "iterations": 10000,
-  "baseline_single_process_time_seconds": 4.9619,
+  "iterations": 100000,
+  "baseline_single_process_time_seconds": 74.9674,
   "runs": [
     {
       "processes": 1,
-      "iterations": 10000,
-      "wall_clock_time_seconds": 4.9619,
-      "throughput_iterations_per_sec": 2015.37,
+      "iterations": 100000,
+      "wall_clock_time_seconds": 74.9674,
+      "throughput_iterations_per_sec": 1333.91,
       "cpu_utilization": {
-        "avg_percent": 36.33,
-        "peak_percent": 61.1
+        "avg_percent": 36.93,
+        "peak_percent": 69.6
       },
       "memory_utilization": {
-        "avg_mb": 7212.95,
-        "peak_mb": 7216.9
+        "avg_mb": 7047.62,
+        "peak_mb": 7206.46
       },
       "speedup": 1.0,
       "efficiency": 1.0
     },
     {
       "processes": 2,
-      "iterations": 10000,
-      "wall_clock_time_seconds": 3.1273,
-      "throughput_iterations_per_sec": 3197.62,
+      "iterations": 100000,
+      "wall_clock_time_seconds": 45.6788,
+      "throughput_iterations_per_sec": 2189.2,
       "cpu_utilization": {
-        "avg_percent": 39.76,
-        "peak_percent": 64.4
+        "avg_percent": 51.66,
+        "peak_percent": 100.0
       },
       "memory_utilization": {
-        "avg_mb": 7181.05,
-        "peak_mb": 7191.21
+        "avg_mb": 6856.56,
+        "peak_mb": 7236.86
       },
-      "speedup": 1.587,
-      "efficiency": 0.7935
+      "speedup": 1.641,
+      "efficiency": 0.8205
     },
     {
       "processes": 4,
-      "iterations": 10000,
-      "wall_clock_time_seconds": 2.2856,
-      "throughput_iterations_per_sec": 4375.21,
+      "iterations": 100000,
+      "wall_clock_time_seconds": 39.7231,
+      "throughput_iterations_per_sec": 2517.43,
       "cpu_utilization": {
-        "avg_percent": 67.99,
-        "peak_percent": 85.8
+        "avg_percent": 87.25,
+        "peak_percent": 100.0
       },
       "memory_utilization": {
-        "avg_mb": 7203.03,
-        "peak_mb": 7224.18
+        "avg_mb": 6974.3,
+        "peak_mb": 7682.17
       },
-      "speedup": 2.171,
-      "efficiency": 0.5427
+      "speedup": 1.887,
+      "efficiency": 0.4718
+    },
+    {
+      "processes": 8,
+      "iterations": 100000,
+      "wall_clock_time_seconds": 24.5559,
+      "throughput_iterations_per_sec": 4072.34,
+      "cpu_utilization": {
+        "avg_percent": 94.74,
+        "peak_percent": 100.0
+      },
+      "memory_utilization": {
+        "avg_mb": 6682.34,
+        "peak_mb": 6817.65
+      },
+      "speedup": 3.053,
+      "efficiency": 0.3816
     }
   ]
 }

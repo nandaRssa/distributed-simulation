@@ -1,0 +1,68 @@
+{
+  "title": "Scalability Evaluation Report - Distributed Monte Carlo SIR Simulation",
+  "total_iterations": 100000,
+  "chunk_size": 5000,
+  "sequential_baseline_time_seconds": 77.1495,
+  "experiments": [
+    {
+      "num_workers": 1,
+      "total_iterations": 100000,
+      "wall_clock_time_seconds": 42.2458,
+      "throughput_iterations_per_sec": 2367.1,
+      "speedup": 1.826,
+      "efficiency": 1.826,
+      "avg_cpu_percent": 47.36,
+      "peak_cpu_percent": 65.5,
+      "avg_memory_mb": 6639.07,
+      "peak_memory_mb": 6725.2
+    },
+    {
+      "num_workers": 2,
+      "total_iterations": 100000,
+      "wall_clock_time_seconds": 40.2248,
+      "throughput_iterations_per_sec": 2486.03,
+      "speedup": 1.918,
+      "efficiency": 0.959,
+      "avg_cpu_percent": 46.4,
+      "peak_cpu_percent": 72.3,
+      "avg_memory_mb": 6501.92,
+      "peak_memory_mb": 6647.35
+    },
+    {
+      "num_workers": 4,
+      "total_iterations": 100000,
+      "wall_clock_time_seconds": 45.0593,
+      "throughput_iterations_per_sec": 2219.3,
+      "speedup": 1.712,
+      "efficiency": 0.428,
+      "avg_cpu_percent": 49.95,
+      "peak_cpu_percent": 69.1,
+      "avg_memory_mb": 6461.48,
+      "peak_memory_mb": 6526.13
+    },
+    {
+      "num_workers": 6,
+      "total_iterations": 100000,
+      "wall_clock_time_seconds": 45.0887,
+      "throughput_iterations_per_sec": 2217.85,
+      "speedup": 1.711,
+      "efficiency": 0.2852,
+      "avg_cpu_percent": 50.5,
+      "peak_cpu_percent": 70.3,
+      "avg_memory_mb": 6453.17,
+      "peak_memory_mb": 6495.91
+    },
+    {
+      "num_workers": 9,
+      "total_iterations": 100000,
+      "wall_clock_time_seconds": 46.2784,
+      "throughput_iterations_per_sec": 2160.83,
+      "speedup": 1.667,
+      "efficiency": 0.1852,
+      "avg_cpu_percent": 52.83,
+      "peak_cpu_percent": 74.7,
+      "avg_memory_mb": 6428.76,
+      "peak_memory_mb": 6512.21
+    }
+  ]
+}
