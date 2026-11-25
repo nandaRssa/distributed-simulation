@@ -23,7 +23,9 @@ MASTER:
 cd /d D:\Downloads\UAS_KPT\Distributed_Simulation
 py master\master.py --host 0.0.0.0 --port 5000 --iterations 500000 --chunk-size 25000 --output results\fault_tolerance_result.json 2>&1 | Tee-Object -FilePath results\log-master-fault.txt
 
-WORKER: py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-01 --processes 4
+WORKER: 
+cd /d D:\Downloads\UAS_KPT\Distributed_Simulation
+py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-01 --processes 4
 
 
 2. DI 9 PC WORKER (jalankan setelah Master aktif)
