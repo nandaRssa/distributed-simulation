@@ -1,0 +1,66 @@
+CARA MENJALANKAN SIMULASI (1 MASTER + 9 WORKER)
+================================================
+
+0. CEK IP MASTER (laptop yang jadi Master)
+   ipconfig
+   Gunakan IPv4 pada bagian "Wireless LAN adapter Wi-Fi".
+   Contoh: 10.113.0.148  --> GANTI DENGAN IP WIFI MASTER DI LAB.
+   Jangan pakai 192.168.56.x (VirtualBox) atau 169.254.x.x (DHCP gagal).
+
+
+1. DI PC MASTER (jalankan duluan)
+
+   cd /d D:\Downloads\UAS_KPT\Distributed_Simulation
+   py master.py --host 0.0.0.0 --port 5000 --iterations 100000 --chunk-size 5000 --output results\simulation_result.json
+
+   Keterangan:
+   - --host 0.0.0.0  = Master mendengarkan semua IP
+   - --min-workers 9 = SUDAH DEFAULT, tidak perlu ditulis
+   - Master baru mulai setelah 9 worker terdaftar (maks. tunggu 15 menit)
+
+
+2. DI 9 PC WORKER (jalankan setelah Master aktif)
+
+   PC Worker 1:
+   cd /d D:\Downloads\UAS_KPT\Distributed_Simulation
+   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-01 --processes 4
+
+   PC Worker 2:
+   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-02 --processes 4
+
+   PC Worker 3:
+   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-03 --processes 4
+
+   PC Worker 4:
+   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-04 --processes 4
+
+   PC Worker 5:
+   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-05 --processes 4
+
+   PC Worker 6:
+   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-06 --processes 4
+
+   PC Worker 7:
+   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-07 --processes 4
+
+   PC Worker 8:
+   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-08 --processes 4
+
+   PC Worker 9:
+   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-09 --processes 4
+
+   Ganti 10.113.0.148 dengan IP WiFi Master yang sebenarnya di lab.
+
+
+3. CATATAN PENTING
+
+   - --host pada worker = IP MASTER, BUKAN IP worker itu sendiri.
+   - Tiap worker punya IP berbeda, tapi tidak perlu ditulis di perintah.
+   - Yang dibedakan hanya --id: WORKER-01 s.d. WORKER-09.
+   - --processes 4 = jumlah core yang dipakai tiap worker (sesuaikan PC lab).
+   - Cek koneksi dari worker: ping <IP-WIFI-MASTER>
+   - Firewall PC Master harus mengizinkan TCP port 5000.
+   - Semua PC harus satu WiFi yang sama dan saling bisa ping.
+   - Folder Distributed_Simulation harus ada di tiap PC worker.
+   - Master nyalakan duluan. Worker yang start lebih awal akan gagal connect.
+   - Hasil akhir: results\simulation_result.json
