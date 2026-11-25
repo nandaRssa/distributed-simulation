@@ -11,7 +11,7 @@ CARA MENJALANKAN SIMULASI (1 MASTER + 9 WORKER)
 1. DI PC MASTER (jalankan duluan)
 
    cd /d D:\Downloads\UAS_KPT\Distributed_Simulation
-   py master.py --host 0.0.0.0 --port 5000 --iterations 100000 --chunk-size 5000 --output results\simulation_result.json
+   py master\master.py --host 0.0.0.0 --port 5000 --iterations 100000 --chunk-size 5000 --output results\simulation_result.json
 
    Keterangan:
    - --host 0.0.0.0  = Master mendengarkan semua IP
@@ -23,31 +23,31 @@ CARA MENJALANKAN SIMULASI (1 MASTER + 9 WORKER)
 
    PC Worker 1:
    cd /d D:\Downloads\UAS_KPT\Distributed_Simulation
-   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-01 --processes 4
+   py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-01 --processes 4
 
    PC Worker 2:
-   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-02 --processes 4
+   py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-02 --processes 4
 
    PC Worker 3:
-   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-03 --processes 4
+   py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-03 --processes 4
 
    PC Worker 4:
-   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-04 --processes 4
+   py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-04 --processes 4
 
    PC Worker 5:
-   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-05 --processes 4
+   py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-05 --processes 4
 
    PC Worker 6:
-   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-06 --processes 4
+   py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-06 --processes 4
 
    PC Worker 7:
-   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-07 --processes 4
+   py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-07 --processes 4
 
    PC Worker 8:
-   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-08 --processes 4
+   py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-08 --processes 4
 
    PC Worker 9:
-   py worker.py --host 10.113.0.148 --port 5000 --id WORKER-09 --processes 4
+   py worker\worker.py --host 10.113.0.148 --port 5000 --id WORKER-09 --processes 4
 
    Ganti 10.113.0.148 dengan IP WiFi Master yang sebenarnya di lab.
 
