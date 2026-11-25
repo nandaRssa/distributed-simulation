@@ -1,0 +1,55 @@
+{
+  "benchmark_type": "local_parallel",
+  "iterations": 10000,
+  "baseline_single_process_time_seconds": 4.9619,
+  "runs": [
+    {
+      "processes": 1,
+      "iterations": 10000,
+      "wall_clock_time_seconds": 4.9619,
+      "throughput_iterations_per_sec": 2015.37,
+      "cpu_utilization": {
+        "avg_percent": 36.33,
+        "peak_percent": 61.1
+      },
+      "memory_utilization": {
+        "avg_mb": 7212.95,
+        "peak_mb": 7216.9
+      },
+      "speedup": 1.0,
+      "efficiency": 1.0
+    },
+    {
+      "processes": 2,
+      "iterations": 10000,
+      "wall_clock_time_seconds": 3.1273,
+      "throughput_iterations_per_sec": 3197.62,
+      "cpu_utilization": {
+        "avg_percent": 39.76,
+        "peak_percent": 64.4
+      },
+      "memory_utilization": {
+        "avg_mb": 7181.05,
+        "peak_mb": 7191.21
+      },
+      "speedup": 1.587,
+      "efficiency": 0.7935
+    },
+    {
+      "processes": 4,
+      "iterations": 10000,
+      "wall_clock_time_seconds": 2.2856,
+      "throughput_iterations_per_sec": 4375.21,
+      "cpu_utilization": {
+        "avg_percent": 67.99,
+        "peak_percent": 85.8
+      },
+      "memory_utilization": {
+        "avg_mb": 7203.03,
+        "peak_mb": 7224.18
+      },
+      "speedup": 2.171,
+      "efficiency": 0.5427
+    }
+  ]
+}

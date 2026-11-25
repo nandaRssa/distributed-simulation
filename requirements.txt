@@ -1,0 +1,6 @@
+# Python dependencies for Distributed Monte Carlo Epidemic Simulation
+# Master Node menggunakan modul standar Python bawaan: socket, threading, struct, json, dataclasses
+# Dependensi berikut disiapkan untuk komputasi simulasi (Anggota 2), visualisasi dan monitoring (Anggota 3):
+numpy>=1.24.0
+matplotlib>=3.7.0
+psutil>=5.9.0
